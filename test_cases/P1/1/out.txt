@@ -1,0 +1,3 @@
+Balance after first month:	$96000.00
+Balance after second month:	$91960.00
+Balance after third month:	$87879.60
