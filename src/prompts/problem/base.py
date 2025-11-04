@@ -20,7 +20,7 @@ PS. 這包含學號、題號(P1, P2, P3_a, P3_b, P4)、ex 標記(P1_ex, P2_ex, P
 
 【評分標準】
 {score_instructions}
-PS. 任何 typo 或格式與範例不符的地方，請整題只扣他最多 1 分 ("只錯 typo、只錯格式、typo 和格式都錯" 都只扣 1 分)。
+PS. 任何 typo，請整題只扣他最多 1 分，就算他多個地方都 typo 整題也只合計扣 1 分。
 
 【注意事項】
 {extra_instructions}

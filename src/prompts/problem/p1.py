@@ -36,7 +36,6 @@ PS. 以 6 分為一個檔次，意思是數學邏輯部分錯誤，當你要酌�
 """
 
 EXTRA_INSTRUCTIONS = """
-- 如同 Output Example，請確保每月餘額前有 "$" 符號，且數字對齊，若沒有則視為格式錯誤，和 typo 合計只扣最多 1 分
 - 輸出格式必須和 Output Example 一致，只能用 first, second, third 來表示月份，否則扣他 6 分
 """
 
