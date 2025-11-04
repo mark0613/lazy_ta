@@ -208,7 +208,7 @@ def grade(
     setup_logging('INFO')
 
     logger.info('=' * 60)
-    logger.info('懶惰 TA - 自動批改系統')
+    logger.info('Lazy TA - 自動批改')
     logger.info('=' * 60)
 
     start_time = datetime.now()
@@ -291,12 +291,12 @@ def grade(
 
     # 完成
     duration = end_time - start_time
-    logger.info('\n' + '=' * 60)
+    logger.info('=' * 60)
     logger.info('批改完成！')
     logger.info(f'結束時間: {end_time.strftime("%Y-%m-%d %H:%M:%S")}')
     logger.info(f'總耗時: {str(duration).split(".")[0]}')
     logger.info('=' * 60)
-    logger.info('\n報告檔案：')
+    logger.info('報告檔案：')
     logger.info(f'  - CSV:  {csv_path}')
     logger.info(f'  - Excel: {excel_path}')
     logger.info(f'  - 摘要:  {summary_path}')
@@ -326,7 +326,7 @@ def build(
     setup_logging('INFO')
 
     logger.info('=' * 60)
-    logger.info('懶惰 TA - 編譯系統')
+    logger.info('Lazy TA - 只編譯')
     logger.info('=' * 60)
 
     start_time = datetime.now()
@@ -388,7 +388,7 @@ def build(
     success_count = sum(1 for sub in compiled_submissions if sub.compile_status == 'success')
     failed_count = sum(1 for sub in compiled_submissions if sub.compile_status == 'failed')
 
-    logger.info('\n' + '=' * 60)
+    logger.info('=' * 60)
     logger.info('編譯完成！')
     logger.info(f'結束時間: {end_time.strftime("%Y-%m-%d %H:%M:%S")}')
     logger.info(f'總耗時: {str(duration).split(".")[0]}')
@@ -418,7 +418,7 @@ def report():
     setup_logging('INFO')
 
     logger.info('=' * 60)
-    logger.info('懶惰 TA - 報告生成系統')
+    logger.info('Lazy TA - 只生成報告')
     logger.info('=' * 60)
 
     start_time = datetime.now()
