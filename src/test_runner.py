@@ -282,8 +282,11 @@ def run_all_tests(submission: Submission, output_dir: Path = None) -> bool:
     # 判斷是否全部通過
     all_passed = submission.passed_tests == submission.total_tests
 
+    # extra 滿分 5 分，普通題目 30 分，而且輸出格式完全正確再 +1 分
+    max_score = 5 if submission.is_extra else 30 + 1
+
     if all_passed:
-        submission.final_score = 6
+        submission.final_score = max_score
         submission.score_reason = f'完全通過 {submission.total_tests} 個測試案例'
         logger.debug(
             f'{submission.identifier} 全部通過: ({submission.passed_tests}/{submission.total_tests})'
