@@ -46,7 +46,10 @@ uv run main.py grade --workers 4
 ```
 
 ### 5. 查看結果
-批改完成後，結果會存放在 `results/` 目錄中。
+批改完成後，結果會存放在 `results/` 目錄中，主要可看 `grades.xlsx`。
+
+### 6. 重新批改 (Optional)
+如果你想重新批改，請刪除 `results/` 目錄下的 `grading_progress.jsonl` 檔案，然後再執行批改指令即可。
 
 
 ## 輸出檔案
@@ -68,7 +71,7 @@ results/
 ## 環境變數說明
 | 變數 | 說明 | 預設值 |
 |------|------|--------|
-| `GOOGLE_API_KEY` | Gemini API Key | *必填* |
+| `GOOGLE_API_KEY` | Gemini API Key，支援多組，以逗號(,)分隔 | *必填* |
 | `GCC_PATH` | gcc 路徑 | `/usr/bin/gcc` |
 | `GPP_PATH` | g++ 路徑 | `/usr/bin/g++` |
 | `COMPILE_TIMEOUT` | 編譯超時 (秒) | `10` |
@@ -79,16 +82,23 @@ results/
 
 ## CLI 指令說明
 ### `grade` - 完整批改流程 (預設指令)
+具體流程:
+1. 編譯學生程式碼，不行即 0 分
+2. LLM 重寫學生程式，註解掉輸入的 prompt
+3. 重新編譯 LLM 重寫的程式碼，若可以編譯則進到 4. 否則進到 5.
+4. 運行測資，完全通過則 30 + 1 分，或 extra 5 分，否則進到 5.
+5. LLM 評分，根據學生程式碼與失敗測資評估給分，滿分 30 或 5 分，並且會抓一些小錯誤扣 1 分
+6. 生成報告
 
-執行編譯、測試、評分、生成報告的完整流程。
 
+指令格式:
 ```bash
 uv run main.py grade [OPTIONS]
 ```
 
 **選項:**
 
-- `--workers, -w`: 平行處理的 worker 數量 (預設 1)
+- `--workers, -w`: 平行處理的 worker 數量 (預設 1)，但因為 LLM 呼叫有限制，所以如果你沒有多組 key，會降速到 worker=1，建議 workers 數為 LLM Keys 的一半
 - `--student, -s`: 指定批改的學號 (多個學號用逗號分隔)
 
 **範例:**
@@ -128,6 +138,7 @@ uv run main.py report
 ```bash
 uv run main.py report  # 從進度檔重新生成所有報告
 ```
+
 
 ## `source_codes/` 目錄結構說明
 ```
