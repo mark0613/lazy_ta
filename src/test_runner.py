@@ -141,6 +141,8 @@ def run_test_case(
         'error': '',
     }
 
+    executable_file = executable.name
+
     try:
         # 讀取輸入（文字模式）
         with open(test_case.in_path, 'r', encoding='utf-8') as f:
@@ -185,17 +187,19 @@ def run_test_case(
         # 比對輸出
         if compare_output(expected_output, actual_output):
             result['passed'] = True
-            logger.debug(f'測試通過: {test_case.test_folder} ({execution_time:.3f}s)')
+            logger.debug(
+                f'測試通過: {executable_file} {test_case.test_folder} ({execution_time:.3f}s)'
+            )
         else:
-            logger.debug(f'測試失敗: {test_case.test_folder} (輸出不符)')
+            logger.debug(f'測試失敗: {executable_file} {test_case.test_folder} (輸出不符)')
 
     except subprocess.TimeoutExpired:
-        result['error'] = f'執行超時（超過 {timeout} 秒）'
-        logger.debug(f'測試超時: {test_case.test_folder}')
+        result['error'] = f'執行超時: {executable_file}（超過 {timeout} 秒）'
+        logger.debug(f'測試超時: {executable_file} {test_case.test_folder}')
 
     except Exception as e:
         result['error'] = f'執行錯誤: {str(e)}'
-        logger.debug(f'測試錯誤: {test_case.test_folder}: {e}')
+        logger.debug(f'測試錯誤: {executable_file} {test_case.test_folder}: {e}')
 
     return result
 
