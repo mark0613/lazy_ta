@@ -24,7 +24,7 @@ Input Example 2 (Decryption):
 Enter a message to be encrypted: Rjjy rj fy ymj ufwp fy snsj.
 Enter shift amount (1-25): 21
 ```
-Output Example 1
+Output Example 2
 ```
 Encrypted message: Meet me at the park at nine.
 ```
