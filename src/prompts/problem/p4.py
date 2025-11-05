@@ -39,6 +39,7 @@ SCORE_INSTRUCTIONS = """
 PS.
 - 以 6 分為一個檔次，意思是數學邏輯部分錯誤，你要酌扣分數，就是 6、12 分這樣，不能只扣 1、2 分
 - 不考慮 output prefix (Encrypted message:)，有寫沒寫都可以，所以如果你發現未通過的的測資僅是因為這個問題，請直接給他滿分
+- 輸出的空格數量不算 typo，只有明顯的拼字錯誤才算 typo
 """
 
 EXTRA_INSTRUCTIONS = """
@@ -71,6 +72,7 @@ EX_EXTRA_INSTRUCTIONS = (
     EXTRA_INSTRUCTIONS
     + """
 - 請注意輸出前綴會因加密或解密而不同，分別為 Encrypted message: 或 Decrypted message: ，如果沒寫就是 0 分
+- 輸出的空格數量不算 typo，只有明顯的拼字錯誤才算 typo
 """.strip()
 )
 
