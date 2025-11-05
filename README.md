@@ -57,14 +57,15 @@ uv run main.py grade --workers 4
 ```
 results/
 ├── grades.csv              # CSV 成績表
-├── grades.xlsx             # Excel 成績表 (含多個工作表)
-├── summary.txt             # 摘要報告
-├── grading.log             # 批改日誌
-├── detailed_logs/          # 詳細日誌
-│   ├── 112550019.txt
+├── grades.xlsx             # Excel 成績表 (含總成績表、詳細測試結果兩個工作表)
+├── summary.txt             # 批改摘要報告 (統計資訊、耗時等)
+├── console.log             # 主要日誌 (記錄 INFO 以上的執行流程)
+├── debug.log               # 除錯日誌 (記錄 DEBUG 以上的詳細資訊)
+├── detailed_logs/          # 每位學生的詳細批改日誌
+│   ├── 112550019.txt       # 包含編譯結果、測試結果、評分理由等
 │   ├── A123456.txt
 │   └── ...
-└── grading_progress.jsonl  # 批改進度檔
+└── grading_progress.jsonl  # 批改進度檔 (用於接續批改,可刪除後重新批改)
 ```
 
 
