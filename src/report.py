@@ -1,5 +1,6 @@
 import csv
 import logging
+import re
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -10,6 +11,32 @@ from .models import StudentGrade, Submission
 from .progress import read_progress_log
 
 logger = logging.getLogger(__name__)
+
+
+def clean_excel_string(text: str) -> str:
+    """
+    清理字串中的非法字符,使其可以安全地寫入 Excel
+
+    移除:
+    - ANSI 控制字符 (如顏色碼)
+    - 其他 Excel 不允許的控制字符
+
+    Args:
+        text: 要清理的字串
+
+    Returns:
+        清理後的字串
+    """
+    if not text:
+        return text
+
+    # 移除 ANSI escape sequences (例如 \x1b[38;5;16m)
+    text = re.sub(r'\x1b\[[0-9;]*m', '', text)
+
+    # 移除其他控制字符 (保留換行符、tab、回車)
+    text = re.sub(r'[\x00-\x08\x0b-\x0c\x0e-\x1f\x7f-\x9f]', '', text)
+
+    return text
 
 
 def _apply_jsonl_progress(grade: StudentGrade, progress):
@@ -358,23 +385,23 @@ def generate_excel_report(
                 {
                     '學號': grade.student_id,
                     'P1': grade.P1_score if grade.P1_score is not None else '',
-                    'P1原因': grade.P1_reason,
+                    'P1原因': clean_excel_string(grade.P1_reason),
                     'P2': grade.P2_score if grade.P2_score is not None else '',
-                    'P2原因': grade.P2_reason,
+                    'P2原因': clean_excel_string(grade.P2_reason),
                     'P3': grade.P3_score if grade.P3_score is not None else '',
-                    'P3原因': grade.P3_reason,
+                    'P3原因': clean_excel_string(grade.P3_reason),
                     'P4': grade.P4_score,
-                    'P4原因': grade.P4_reason,
+                    'P4原因': clean_excel_string(grade.P4_reason),
                     'P1_extra': grade.P1_extra if grade.P1_extra is not None else '',
-                    'P1_extra原因': grade.P1_extra_reason,
+                    'P1_extra原因': clean_excel_string(grade.P1_extra_reason),
                     'P2_extra': grade.P2_extra if grade.P2_extra is not None else '',
-                    'P2_extra原因': grade.P2_extra_reason,
+                    'P2_extra原因': clean_excel_string(grade.P2_extra_reason),
                     'P3_extra': grade.P3_extra if grade.P3_extra is not None else '',
-                    'P3_extra原因': grade.P3_extra_reason,
+                    'P3_extra原因': clean_excel_string(grade.P3_extra_reason),
                     'P4_extra': grade.P4_extra if grade.P4_extra is not None else '',
-                    'P4_extra原因': grade.P4_extra_reason,
+                    'P4_extra原因': clean_excel_string(grade.P4_extra_reason),
                     '總分': grade.total_score,
-                    '異常': issues,
+                    '異常': clean_excel_string(issues),
                 }
             )
 
@@ -392,7 +419,7 @@ def generate_excel_report(
                         '測試案例': result.get('test_folder', ''),
                         '通過': '是' if result.get('passed', False) else '否',
                         '執行時間(s)': result.get('execution_time', 0),
-                        '錯誤': result.get('error', ''),
+                        '錯誤': clean_excel_string(result.get('error', '')),
                     }
                 )
 
