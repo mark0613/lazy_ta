@@ -482,14 +482,14 @@ def generate_detailed_logs(submissions: list[Submission], output_dir: Path):
                                     f.write(f'    預期: {repr(expected)}\n')
                                     f.write(f'    實際: {repr(actual)}\n')
 
-                    f.write(f'最終得分: {sub.final_score}/6\n')
+                    f.write(f'最終得分: {sub.final_score}\n')
                     f.write(f'評分理由: {sub.score_reason}\n')
 
                 else:
                     f.write('編譯: ✗ 失敗\n')
                     f.write('錯誤訊息:\n')
                     f.write(f'{sub.compile_error}\n')
-                    f.write(f'最終得分: {sub.final_score}/6\n')
+                    f.write(f'最終得分: {sub.final_score}\n')
 
                 f.write('\n')
 

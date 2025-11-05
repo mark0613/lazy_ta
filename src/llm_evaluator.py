@@ -56,5 +56,5 @@ def evaluate_with_llm(submission: Submission) -> LLMEvaluation:
     submission.final_score = response.score
     submission.score_reason = response.reason
 
-    logger.debug(f'{submission.identifier} LLM 評分完成，得分 {response.score}/6')
+    logger.debug(f'{submission.identifier} LLM 評分完成，得分 {response.score}')
     return response

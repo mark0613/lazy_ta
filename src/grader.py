@@ -138,7 +138,7 @@ def run_tests(submission: Submission) -> Submission:
     all_passed = run_all_tests(submission, test_output_dir)
 
     if all_passed:
-        logger.debug(f'{submission.identifier} 全部通過: (6/6)')
+        logger.debug(f'{submission.identifier} 全部通過')
         # 全部通過立即更新進度
         problem_key = get_problem_key(submission)
         update_progress_entry(
