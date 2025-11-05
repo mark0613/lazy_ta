@@ -1,4 +1,5 @@
 import logging
+import shutil
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
@@ -403,6 +404,74 @@ def build(
             if sub.compile_status == 'failed':
                 logger.info(f'  - {sub.identifier}: {sub.compile_error}')
 
+    logger.info('')
+
+
+@app.command()
+def clear():
+    """
+    清除 results 和 tmp 目錄
+
+    範例:
+        uv run main.py clear  # 清除所有暫存和結果檔案
+    """
+    # 設定日誌
+    setup_logging('INFO')
+
+    logger.info('=' * 60)
+    logger.info('Lazy TA - 清除暫存和結果 (results, tmp)')
+    logger.info('=' * 60)
+
+    # 清除 tmp 目錄（整個刪除）
+    tmp_path = Path('tmp')
+    if tmp_path.exists():
+        try:
+            shutil.rmtree(tmp_path)
+            logger.info(f'✓ 已清除: {tmp_path}/')
+        except Exception as e:
+            logger.error(f'✗ 清除失敗 {tmp_path}/: {e}')
+    else:
+        logger.info(f'○ 目錄不存在，跳過: {tmp_path}/')
+
+    # 清除 results 目錄中的非 .log 檔案
+    results_path = Path('results')
+    if results_path.exists():
+        deleted_count = 0
+        skipped_count = 0
+        error_count = 0
+
+        for item in results_path.rglob('*'):
+            if item.is_file():
+                # 跳過 .log 檔案
+                if item.suffix == '.log':
+                    skipped_count += 1
+                    continue
+
+                try:
+                    item.unlink()
+                    deleted_count += 1
+                except Exception as e:
+                    logger.error(f'✗ 刪除失敗 {item}: {e}')
+                    error_count += 1
+
+        # 刪除空目錄（由下而上）
+        for item in sorted(results_path.rglob('*'), reverse=True):
+            if item.is_dir() and not any(item.iterdir()):
+                try:
+                    item.rmdir()
+                except Exception:
+                    pass
+
+        logger.info(
+            f'✓ 已清除 results/: 刪除 {deleted_count} 個檔案, 跳過 {skipped_count} 個 .log 檔'
+        )
+        if error_count > 0:
+            logger.warning(f'  有 {error_count} 個檔案刪除失敗')
+    else:
+        logger.info(f'○ 目錄不存在，跳過: {results_path}/')
+
+    logger.info('=' * 60)
+    logger.info('清除完成！')
     logger.info('')
 
 
